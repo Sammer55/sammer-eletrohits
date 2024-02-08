@@ -1,7 +1,12 @@
-import { View } from "react-native";
+import Header from "@/components/header";
+import * as C from "./styles";
 
 const HomeScreen = () => {
-  return <View></View>;
+  return (
+    <C.Wrapper>
+      <Header title="Home" />
+    </C.Wrapper>
+  );
 };
 
 export default HomeScreen;

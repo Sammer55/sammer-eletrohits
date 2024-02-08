@@ -1,5 +1,5 @@
 {
-  "name": "sammer-eletrohits-2",
+  "name": "sammer-eletrohits",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "axios": "^1.6.7",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "expo": "~50.0.6",
+    "expo-av": "^13.10.5",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.2",
