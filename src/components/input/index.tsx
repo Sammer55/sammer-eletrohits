@@ -6,11 +6,12 @@ type Props = {
   editable?: boolean;
 } & TextInputProps;
 
-const Input = ({ editable, ...rest }: Props) => {
+const Input = ({ editable = true, ...rest }: Props) => {
   const { colors } = useTheme();
 
   return (
     <TextInput
+      editable={editable}
       placeholderTextColor={editable ? colors.placeholder : colors.black}
       {...rest}
     />
