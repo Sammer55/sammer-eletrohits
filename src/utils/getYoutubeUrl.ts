@@ -1,0 +1,13 @@
+import ytdl from "react-native-ytdl";
+
+const getYoutubeUrl = async (videoId: string) => {
+  const info = await ytdl.getInfo(videoId);
+  const audioFormats = ytdl.filterFormats(info.formats, "audioonly");
+  const bestAudioFormat = ytdl.chooseFormat(audioFormats, {
+    quality: "highestaudio",
+  });
+
+  return bestAudioFormat.url;
+};
+
+export default getYoutubeUrl;

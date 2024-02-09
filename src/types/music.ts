@@ -25,4 +25,6 @@ interface MusicProps {
   id: VideoId;
   kind: string;
   snippet: Snippet;
+  isDownloaded?: boolean;
+  localStorage?: string;
 }
