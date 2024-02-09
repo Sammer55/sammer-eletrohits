@@ -2,23 +2,24 @@ import useDownload from "@/hooks/useDownload";
 import ProgressBar from "../progressBar";
 import * as C from "./styles";
 import getYoutubeUrl from "@/utils/getYoutubeUrl";
-import { Audio } from "expo-av";
-import { useStore } from "@/store";
+import { useEletrohitsStore } from "@/store";
+import usePlayer from "@/hooks/usePlayer";
 
 type Props = {
   item: MusicProps;
-  localMusics?: MusicProps[];
-  handleRemoveDownload: (item: MusicProps) => void;
 };
 
-const Music = ({ item, localMusics, handleRemoveDownload }: Props) => {
+const Music = ({ item }: Props) => {
   const { snippet } = item;
   const videoId = item?.id?.videoId;
 
+  const { downloadedMusics } = useEletrohitsStore();
   const { progress, handleDownloadMusic } = useDownload();
-  const { getDownloadedMusics } = useStore();
+  const { getDownloadedMusics, setMusicToRemove } = useEletrohitsStore();
 
-  const localMusic = localMusics?.find(
+  const { handlePlay } = usePlayer();
+
+  const localMusic = downloadedMusics?.find(
     (local) => local?.id?.videoId === videoId
   );
 
@@ -28,15 +29,7 @@ const Music = ({ item, localMusics, handleRemoveDownload }: Props) => {
 
   const handlePress = async () => {
     if (isDownloaded && localMusic?.localStorage) {
-      const { sound } = await Audio.Sound.createAsync({
-        uri: localMusic?.localStorage,
-        type: "audio/webm",
-      });
-
-      if (sound) {
-        await sound.playAsync();
-      }
-
+      handlePlay(localMusic);
       return;
     }
 
@@ -46,13 +39,13 @@ const Music = ({ item, localMusics, handleRemoveDownload }: Props) => {
     if (!!response) getDownloadedMusics();
   };
 
-  const handleDeleteMusic = () => handleRemoveDownload(item);
+  const handleDeleteMusic = () => setMusicToRemove(item);
 
   return (
     <C.Wrapper onPress={handlePress} disabled={!!inProgress}>
       <C.Content>
         <C.WrapperImage>
-          <C.Image source={snippet?.thumbnails?.default} />
+          <C.Image source={{ uri: snippet?.thumbnails?.default?.url }} />
           {isDownloaded && <C.Check source={require("assets/sound.png")} />}
         </C.WrapperImage>
         <C.WrapperTextContent>

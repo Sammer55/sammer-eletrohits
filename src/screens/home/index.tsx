@@ -1,28 +1,28 @@
 import Header from "@/components/header";
 import * as C from "./styles";
-import Input from "@/components/input";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Octicons } from "@expo/vector-icons";
-import { useTheme } from "styled-components";
-import { FlatList, View } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList } from "react-native";
 import { getVideosBySearch } from "@/api";
 import Music from "@/components/music";
 import useDownload from "@/hooks/useDownload";
 import Alert from "@/components/alert";
-import { useStore } from "@/store";
+import { useEletrohitsStore } from "@/store";
+import Search from "./search";
 
 type RenderItemProps = {
   item: MusicProps;
 };
 
 const HomeScreen = () => {
-  const [search, setSearch] = useState<string | undefined>("aklipe");
+  const [search, setSearch] = useState<string | undefined>("10 seconds");
   const [musics, setMusics] = useState<MusicProps[] | []>([]);
-  const [removingMusic, setRemovingMusic] = useState<MusicProps | null>(null);
 
-  const { colors } = useTheme();
   const { handleRemoveDownload } = useDownload();
-  const { downloadedMusics, getDownloadedMusics } = useStore();
+  const {
+    getDownloadedMusics,
+    setMusicToRemove,
+    musicToRemove: removingMusic,
+  } = useEletrohitsStore();
 
   const handleDeleteMusic = async () => {
     if (!removingMusic) return;
@@ -30,18 +30,12 @@ const HomeScreen = () => {
     const response = await handleRemoveDownload(removingMusic);
 
     if (response) {
-      setRemovingMusic(null);
+      setMusicToRemove(null);
       getDownloadedMusics();
     }
   };
 
-  const renderItem = ({ item }: RenderItemProps) => (
-    <Music
-      localMusics={downloadedMusics || []}
-      item={item}
-      handleRemoveDownload={setRemovingMusic}
-    />
-  );
+  const renderItem = ({ item }: RenderItemProps) => <Music item={item} />;
 
   const getVideos = async () => {
     if (search) {
@@ -61,20 +55,7 @@ const HomeScreen = () => {
   return (
     <C.Wrapper>
       <Header title="Home" />
-      <C.WrapperSearch>
-        <Input
-          onChangeText={setSearch}
-          value={search}
-          placeholder="Pesquisar..."
-        />
-        <C.SearchButton disabled={!search} onPress={() => {}}>
-          <Octicons
-            name="search"
-            size={18}
-            color={!search ? colors.border : colors.black}
-          />
-        </C.SearchButton>
-      </C.WrapperSearch>
+      <Search search={search} setSearch={setSearch} />
 
       <FlatList
         // ListHeaderComponent={}
@@ -94,7 +75,7 @@ const HomeScreen = () => {
           question={`Tem certeza que deseja remover "${removingMusic?.snippet?.title}" da sua playlist?`}
           isVisible={!!removingMusic}
           handleConfirm={handleDeleteMusic}
-          handleClose={() => setRemovingMusic(null)}
+          handleClose={() => setMusicToRemove(null)}
           image={require("assets/trash.png")}
         />
       )}

@@ -2,12 +2,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as C from "./styles";
 import { BackHandler } from "react-native";
 import { useTheme } from "styled-components";
+import { memo } from "react";
 
 type Props = {
   title: string;
 };
 
-const Header = ({ title }: Props) => {
+const Header = memo(({ title }: Props) => {
   const { colors } = useTheme();
 
   const handleExitApp = () => BackHandler.exitApp();
@@ -27,6 +28,6 @@ const Header = ({ title }: Props) => {
       </C.Content>
     </C.Wrapper>
   );
-};
+});
 
 export default Header;
