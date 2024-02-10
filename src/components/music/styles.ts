@@ -50,7 +50,7 @@ export const ChannelName = styled.Text.attrs(() => ({
   numberOfLines: 1,
 }))`
   font-weight: 700;
-  font-size: 10px;
+  font-size: 12px;
 `;
 
 export const Name = styled.Text.attrs(() => ({

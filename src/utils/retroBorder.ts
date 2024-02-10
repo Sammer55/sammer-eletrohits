@@ -1,7 +1,7 @@
 import { css } from "styled-components";
 
 export const retroBorder = css`
-  border: 1px solid;
+  border-width: 1px;
   border-top-color: #ffffff;
   border-left-color: #ffffff;
   border-right-color: #000000;

@@ -14,7 +14,7 @@ const Header = memo(({ title }: Props) => {
   const handleExitApp = () => BackHandler.exitApp();
 
   return (
-    <C.Wrapper style={{ paddingTop: 16 }}>
+    <C.Wrapper>
       <C.Content>
         <C.Title>{title}</C.Title>
         <C.Actions>

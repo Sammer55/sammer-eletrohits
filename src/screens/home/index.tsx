@@ -8,13 +8,13 @@ import useDownload from "@/hooks/useDownload";
 import Alert from "@/components/alert";
 import { useEletrohitsStore } from "@/store";
 import Search from "./search";
+import MusicPlayer from "@/components/musicPlayer";
 
 type RenderItemProps = {
   item: MusicProps;
 };
 
 const HomeScreen = () => {
-  const [search, setSearch] = useState<string | undefined>("10 seconds");
   const [musics, setMusics] = useState<MusicProps[] | []>([]);
 
   const { handleRemoveDownload } = useDownload();
@@ -37,7 +37,7 @@ const HomeScreen = () => {
 
   const renderItem = ({ item }: RenderItemProps) => <Music item={item} />;
 
-  const getVideos = async () => {
+  const handleSearch = async (search?: string) => {
     if (search) {
       const response = await getVideosBySearch({ search });
       setMusics(response);
@@ -45,7 +45,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    getVideos();
+    handleSearch();
   }, []);
 
   useEffect(() => {
@@ -55,10 +55,9 @@ const HomeScreen = () => {
   return (
     <C.Wrapper>
       <Header title="Home" />
-      <Search search={search} setSearch={setSearch} />
+      <Search handleSearch={handleSearch} />
 
       <FlatList
-        // ListHeaderComponent={}
         showsVerticalScrollIndicator={false}
         data={musics}
         contentContainerStyle={{
@@ -79,6 +78,8 @@ const HomeScreen = () => {
           image={require("assets/trash.png")}
         />
       )}
+
+      <MusicPlayer />
     </C.Wrapper>
   );
 };

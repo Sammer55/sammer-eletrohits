@@ -1,8 +1,10 @@
 import { retroBorder } from "@/utils/retroBorder";
+import { StatusBar } from "react-native";
 import styled from "styled-components/native";
 
 export const Wrapper = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.colors.primary};
+  padding-top: ${(StatusBar.currentHeight || 0) + 16}px;
 `;
 
 export const Content = styled.View`
