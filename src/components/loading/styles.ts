@@ -1,13 +1,15 @@
 import styled from "styled-components/native";
 
 export const Wrapper = styled.View`
-  flex-direction: row;
+  padding: 8px;
   align-items: center;
 `;
 
-export const Time = styled.Text`
+export const Image = styled.Image`
+  width: 80px;
+  height: 80px;
+`;
+
+export const Text = styled.Text`
   color: ${({ theme }) => theme.colors.black};
-  font-size: 16px;
-  width: 40px;
-  text-align: center;
 `;

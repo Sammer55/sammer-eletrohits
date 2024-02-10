@@ -1,8 +1,8 @@
-import { useTheme } from "styled-components";
-import * as C from "./styles";
-import Input from "@/components/input";
-import { Octicons } from "@expo/vector-icons";
 import { memo, useState } from "react";
+import * as C from "./styles";
+import { useTheme } from "styled-components";
+import { Octicons } from "@expo/vector-icons";
+import Input from "@/components/input";
 
 type Props = {
   handleSearch: (value: string) => void;

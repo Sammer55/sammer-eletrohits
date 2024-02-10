@@ -1,8 +1,8 @@
-import { MaterialIcons } from "@expo/vector-icons";
-import * as C from "./styles";
-import { BackHandler } from "react-native";
-import { useTheme } from "styled-components";
 import { memo } from "react";
+import { BackHandler } from "react-native";
+import * as C from "./styles";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useTheme } from "styled-components";
 
 type Props = {
   title: string;

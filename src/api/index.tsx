@@ -10,8 +10,8 @@ export const getVideosBySearch = async ({ search }: SearchType) =>
       params: {
         part: "snippet",
         q: search,
-        // key: process.env.EXPO_PUBLIC_API_URL,
-        key: "AIzaSyBqY-Snm-V8iDsJoPVJLAyyogdABtNaYSE",
+        // API KEY: YouTube Data API v3 - Google Cloud
+        key: "",
         maxResults: 20,
       },
     })
@@ -22,5 +22,4 @@ export const getVideosBySearch = async ({ search }: SearchType) =>
       );
 
       return removeChannels;
-    })
-    .catch((e) => console.log(e.response.data));
+    });

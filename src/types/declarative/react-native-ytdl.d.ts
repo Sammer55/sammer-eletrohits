@@ -1,1 +1,1 @@
-declare module "@types/react-native-ytdl";
+declare module "react-native-ytdl";

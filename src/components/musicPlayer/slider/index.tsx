@@ -1,12 +1,14 @@
-import { useEletrohitsStore } from "@/store";
+import { memo, useEffect, useState } from "react";
 import * as C from "./styles";
-import CommunitySlider from "@react-native-community/slider";
-import { millisToMinutesAndSeconds } from "@/utils/millisToMinutesAndSeconds";
 import { useTheme } from "styled-components";
-import { memo, useEffect } from "react";
+import { millisToMinutesAndSeconds } from "@/utils/millisToMinutesAndSeconds";
+import CommunitySlider from "@react-native-community/slider";
+import { useEletrohitsStore } from "@/store";
 
 const Slider = memo(() => {
-  const { music, getMusicStatusAsync } = useEletrohitsStore();
+  const [position, setPosition] = useState<number>(0);
+
+  const { music, setMusic } = useEletrohitsStore();
 
   const { colors } = useTheme();
 
@@ -14,30 +16,34 @@ const Slider = memo(() => {
     music?.status?.duration &&
     millisToMinutesAndSeconds(music?.status?.duration);
 
-  const position =
-    music?.status?.position &&
-    millisToMinutesAndSeconds(music?.status?.position);
-
   useEffect(() => {
-    if (music) {
-      getMusicStatusAsync(music);
+    if (music?.status && position >= music?.status?.duration) {
+      setMusic(null);
+      return;
+    }
 
+    if (music && music?.status && position <= music?.status?.duration) {
       const timer = setInterval(() => {
-        getMusicStatusAsync(music);
+        setPosition(position + 1000);
       }, 1000);
 
       return () => clearInterval(timer);
     }
-  }, [music]);
+  }, [music, position]);
+
+  const handleSetPosition = (value: number) => {
+    setPosition(value);
+    music?.sound?.setPositionAsync(value);
+  };
 
   return (
     <C.Wrapper>
-      <C.Time>{position}</C.Time>
+      <C.Time>{position && millisToMinutesAndSeconds(position)}</C.Time>
       <CommunitySlider
         style={{ flex: 1 }}
         minimumValue={0}
-        value={music?.status?.position}
-        onValueChange={(value) => music?.sound?.setPositionAsync(value)}
+        value={position}
+        onValueChange={handleSetPosition}
         maximumValue={music?.status?.duration}
         minimumTrackTintColor={colors.black}
         maximumTrackTintColor={colors.black}

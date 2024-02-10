@@ -1,7 +1,7 @@
-import Modal from "react-native-modal";
+import { memo } from "react";
 import * as C from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
-import { memo } from "react";
+import Modal from "react-native-modal";
 
 type Props = {
   title: string;

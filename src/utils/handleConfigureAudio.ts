@@ -1,14 +1,20 @@
-import { Audio } from "expo-av";
+import {
+  Audio,
+  AudioMode,
+  InterruptionModeAndroid,
+  InterruptionModeIOS,
+} from "expo-av";
 
 const handleConfigureAudio = async () => {
   await Audio.requestPermissionsAsync();
 
-  const audioModeConfig = {
-    staysActiveInBackground: true,
-    shouldDuckAndroid: false,
-    playThroughEarpieceAndroid: false,
-    allowsRecordingIOS: false,
+  const audioModeConfig: Partial<AudioMode> = {
+    allowsRecordingIOS: true,
+    interruptionModeIOS: InterruptionModeIOS.DoNotMix,
     playsInSilentModeIOS: true,
+    shouldDuckAndroid: true,
+    interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+    playThroughEarpieceAndroid: true,
   };
 
   await Audio.setAudioModeAsync(audioModeConfig);

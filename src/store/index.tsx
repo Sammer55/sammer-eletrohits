@@ -1,16 +1,16 @@
-import { asyncStorageKeyMusics } from "@/utils/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { asyncStorageKeyMusics } from "@/utils/asyncStorageKeys";
 import { create } from "zustand";
 
 type EletrohitsStoreProps = {
   downloadedMusics: MusicProps[];
-  getDownloadedMusics: () => void;
+  getDownloadedMusics: () => Promise<MusicProps[] | []>;
 
   musicToRemove: null | MusicProps;
   setMusicToRemove: (music: null | MusicProps) => void;
 
   music: null | MusicProps;
-  setMusic: (music: MusicProps) => void;
+  setMusic: (music: MusicProps | null) => void;
 
   getMusicStatusAsync: (music: MusicProps) => void;
 };
@@ -22,7 +22,11 @@ export const useEletrohitsStore = create<EletrohitsStoreProps>((set) => ({
     if (musics) {
       const downloadedMusics = JSON.parse(musics);
       set(() => ({ downloadedMusics }));
+
+      return downloadedMusics;
     }
+
+    return [];
   },
 
   musicToRemove: null,

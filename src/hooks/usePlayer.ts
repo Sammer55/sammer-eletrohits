@@ -1,34 +1,41 @@
+import { Platform } from "react-native";
+import getYoutubeUrl from "@/utils/getYoutubeUrl";
 import { useEletrohitsStore } from "@/store";
 import { Audio } from "expo-av";
 
 const usePlayer = () => {
   const { music: playingMusic, setMusic } = useEletrohitsStore();
 
-  const handlePause = async () => {
-    if (playingMusic) {
-      await playingMusic?.sound.playAsync();
-    }
-  };
-
   const handlePlay = async (music: MusicProps) => {
-    if (!music?.localStorage) return;
-    if (music?.status?.isPlaying) return handlePause();
+    const videoId = music?.id?.videoId;
+
+    if (!!playingMusic && videoId)
+      return await playingMusic?.sound?.playAsync();
+
+    const audioUrl = await getYoutubeUrl(videoId);
 
     const { sound } = await Audio.Sound.createAsync({
-      uri: music?.localStorage,
-      type: "audio/webm",
+      uri: Platform.OS === "android" ? music?.localStorage : audioUrl,
+      type: Platform.OS === "android" ? "audio/webm" : "video/mp4",
     });
 
     if (sound) {
       await sound.playAsync();
+      setMusic({
+        ...music,
+        sound,
+        status: {
+          isPlaying: true,
+          duration: 0,
+          position: 0,
+          finished: false,
+        },
+      });
     }
-
-    setMusic({ ...music, sound });
   };
 
   return {
     handlePlay,
-    handlePause,
   };
 };
 

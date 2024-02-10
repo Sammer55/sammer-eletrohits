@@ -3,10 +3,16 @@ interface VideoId {
   videoId: string;
 }
 
+interface ThumbnailImage {
+  url: string;
+  height: number;
+  width: number;
+}
+
 interface Thumbnails {
-  default: any;
-  high: any;
-  medium: any;
+  default: ThumbnailImage;
+  high: ThumbnailImage;
+  medium: ThumbnailImage;
 }
 
 interface Snippet {

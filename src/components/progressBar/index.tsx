@@ -1,6 +1,6 @@
 import React from "react";
-import * as C from "./styles";
 import { Dimensions } from "react-native";
+import * as C from "./styles";
 
 type Props = {
   percent: number;

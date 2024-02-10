@@ -8,6 +8,7 @@ export const Wrapper = styled.View<{ isHidden?: boolean }>`
   bottom: 0;
   padding: 8px;
   align-self: center;
+  width: 100%;
   ${retroBorder}
 `;
 
@@ -33,9 +34,21 @@ export const Image = styled.Image`
   background-color: ${({ theme }) => theme.colors.black};
 `;
 
+export const WrapperText = styled.View`
+  gap: 4px;
+`;
+
 export const Text = styled.Text.attrs(() => ({
   numberOfLines: 1,
 }))`
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+export const ChannelName = styled.Text.attrs(() => ({
+  numberOfLines: 1,
+}))`
+  font-size: 12px;
   color: ${({ theme }) => theme.colors.black};
 `;
 
@@ -49,7 +62,7 @@ export const PlayerButton = styled.TouchableOpacity`
 `;
 
 export const Actions = styled.View`
-  margin-top: 16px;
+  margin-bottom: 16px;
 `;
 
 export const WrapperSlider = styled.View`

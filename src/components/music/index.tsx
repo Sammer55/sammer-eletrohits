@@ -1,8 +1,8 @@
-import useDownload from "@/hooks/useDownload";
-import ProgressBar from "../progressBar";
 import * as C from "./styles";
 import getYoutubeUrl from "@/utils/getYoutubeUrl";
+import useDownload from "@/hooks/useDownload";
 import { useEletrohitsStore } from "@/store";
+import ProgressBar from "../progressBar";
 import usePlayer from "@/hooks/usePlayer";
 
 type Props = {
@@ -13,7 +13,7 @@ const Music = ({ item }: Props) => {
   const { snippet } = item;
   const videoId = item?.id?.videoId;
 
-  const { downloadedMusics, setMusic } = useEletrohitsStore();
+  const { downloadedMusics } = useEletrohitsStore();
   const { progress, handleDownloadMusic } = useDownload();
   const { getDownloadedMusics, setMusicToRemove } = useEletrohitsStore();
 
@@ -28,8 +28,6 @@ const Music = ({ item }: Props) => {
   const inProgress = progress > 0 && progress < 100;
 
   const handlePress = async () => {
-    if (localMusic) setMusic(localMusic);
-
     if (isDownloaded && localMusic?.localStorage) {
       handlePlay(localMusic);
       return;

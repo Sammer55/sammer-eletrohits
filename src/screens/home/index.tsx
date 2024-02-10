@@ -1,24 +1,28 @@
-import Header from "@/components/header";
-import * as C from "./styles";
 import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
-import { getVideosBySearch } from "@/api";
-import Music from "@/components/music";
-import useDownload from "@/hooks/useDownload";
-import Alert from "@/components/alert";
-import { useEletrohitsStore } from "@/store";
-import Search from "./search";
+import * as C from "./styles";
 import MusicPlayer from "@/components/musicPlayer";
+import useDownload from "@/hooks/useDownload";
+import { useEletrohitsStore } from "@/store";
+import { getVideosBySearch } from "@/api";
+import Header from "@/components/header";
+import Music from "@/components/music";
+import Alert from "@/components/alert";
+import Search from "./search";
+import Loading from "@/components/loading";
+import SelectPlaylistType, { PlaylistTypeProps } from "./playlistType";
 
 type RenderItemProps = {
   item: MusicProps;
 };
 
 const HomeScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [musics, setMusics] = useState<MusicProps[] | []>([]);
 
   const { handleRemoveDownload } = useDownload();
   const {
+    downloadedMusics,
     getDownloadedMusics,
     setMusicToRemove,
     musicToRemove: removingMusic,
@@ -39,34 +43,53 @@ const HomeScreen = () => {
 
   const handleSearch = async (search?: string) => {
     if (search) {
-      const response = await getVideosBySearch({ search });
+      setIsLoading(true);
+
+      const response = await getVideosBySearch({ search }).finally(() =>
+        setIsLoading(false)
+      );
+
       setMusics(response);
     }
   };
 
-  useEffect(() => {
-    handleSearch();
-  }, []);
+  const handleChangePlaylistType = (type: PlaylistTypeProps) => {
+    if (type === "local") return setMusics(downloadedMusics);
+    if (type === "youtube") return handleSearch("the 1975 robbers");
+  };
+
+  const handleGetDownloadedMusics = async () =>
+    await getDownloadedMusics().then((response: MusicProps[] | []) =>
+      setMusics(response)
+    );
 
   useEffect(() => {
-    getDownloadedMusics();
+    handleGetDownloadedMusics();
   }, []);
 
   return (
     <C.Wrapper>
-      <Header title="Home" />
+      <Header title="Home - Sammer Eletrohits" />
       <Search handleSearch={handleSearch} />
 
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={musics}
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: 16,
-        }}
-        keyExtractor={(item) => `${item?.id?.videoId} ${item?.etag}`}
-        renderItem={renderItem}
-      />
+      <SelectPlaylistType onChange={handleChangePlaylistType} />
+
+      {isLoading && <Loading text="Carregando músicas" />}
+
+      {!isLoading && (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={musics}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: 116,
+          }}
+          keyExtractor={(item, index) =>
+            `${item?.id?.videoId} ${index?.toString()}`
+          }
+          renderItem={renderItem}
+        />
+      )}
 
       {!!removingMusic && (
         <Alert
