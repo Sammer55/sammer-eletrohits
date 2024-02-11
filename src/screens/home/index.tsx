@@ -21,12 +21,18 @@ const HomeScreen = () => {
   const [musics, setMusics] = useState<MusicProps[] | []>([]);
 
   const { handleRemoveDownload } = useDownload();
-  const {
+
+  const [
     downloadedMusics,
     getDownloadedMusics,
     setMusicToRemove,
-    musicToRemove: removingMusic,
-  } = useEletrohitsStore();
+    removingMusic,
+  ] = useEletrohitsStore((state) => [
+    state.downloadedMusics,
+    state.getDownloadedMusics,
+    state.setMusicToRemove,
+    state.musicToRemove,
+  ]);
 
   const handleDeleteMusic = async () => {
     if (!removingMusic) return;

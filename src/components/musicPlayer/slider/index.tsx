@@ -8,7 +8,10 @@ import { useEletrohitsStore } from "@/store";
 const Slider = memo(() => {
   const [position, setPosition] = useState<number>(0);
 
-  const { music, setMusic } = useEletrohitsStore();
+  const [music, setMusic] = useEletrohitsStore((state) => [
+    state.music,
+    state.setMusic,
+  ]);
 
   const { colors } = useTheme();
 

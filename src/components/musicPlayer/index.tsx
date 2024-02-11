@@ -4,7 +4,7 @@ import { useEletrohitsStore } from "@/store";
 import Slider from "./slider";
 
 const MusicPlayer = () => {
-  const { music } = useEletrohitsStore();
+  const music = useEletrohitsStore((state) => state.music);
 
   return (
     <C.Wrapper isHidden={!music?.sound || Keyboard.isVisible()}>

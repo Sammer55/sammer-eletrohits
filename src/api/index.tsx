@@ -11,7 +11,7 @@ export const getVideosBySearch = async ({ search }: SearchType) =>
         part: "snippet",
         q: search,
         // API KEY: YouTube Data API v3 - Google Cloud
-        key: "",
+        key: "AIzaSyBqY-Snm-V8iDsJoPVJLAyyogdABtNaYSE",
         maxResults: 20,
       },
     })

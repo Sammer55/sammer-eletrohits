@@ -4,7 +4,10 @@ import { useEletrohitsStore } from "@/store";
 import { Audio } from "expo-av";
 
 const usePlayer = () => {
-  const { music: playingMusic, setMusic } = useEletrohitsStore();
+  const [playingMusic, setMusic] = useEletrohitsStore((state) => [
+    state.music,
+    state.setMusic,
+  ]);
 
   const handlePlay = async (music: MusicProps) => {
     const videoId = music?.id?.videoId;

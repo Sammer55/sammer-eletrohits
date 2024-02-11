@@ -13,9 +13,13 @@ const Music = ({ item }: Props) => {
   const { snippet } = item;
   const videoId = item?.id?.videoId;
 
-  const { downloadedMusics } = useEletrohitsStore();
+  const [downloadedMusics, getDownloadedMusics, setMusicToRemove] =
+    useEletrohitsStore((state) => [
+      state.downloadedMusics,
+      state.getDownloadedMusics,
+      state.setMusicToRemove,
+    ]);
   const { progress, handleDownloadMusic } = useDownload();
-  const { getDownloadedMusics, setMusicToRemove } = useEletrohitsStore();
 
   const { handlePlay } = usePlayer();
 
